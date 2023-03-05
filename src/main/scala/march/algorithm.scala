@@ -9,6 +9,22 @@ case class Instruction(addrWidth: Int) extends Bundle {
   val addr = UInt(addrWidth bit)
 }
 
+case class Element(maxOps: Int) extends Bundle {
+  val count = UInt(log2Up(maxOps) bits)
+  val opBase = UInt(log2Up(maxOps) bits)
+  val isUpDir = Bool()
+}
+
+case class AddrElement(maxOps: Int, addrWidth: Int) extends Bundle {
+  val addr = UInt(addrWidth bits)
+  val element = Element(maxOps)
+}
+
+case class OpElement(maxOps: Int, addrWidth: Int) extends Bundle {
+  val addr = UInt(addrWidth bits)
+  val opAddr = UInt(log2Up(maxOps) bits)
+}
+
 case class Check[T <: Instruction](input: Stream[Instruction], data: Bool)
     extends Area {
   val writeStream = cloneOf(input)
@@ -39,3 +55,54 @@ case class Access(input: Stream[Instruction]) extends Area {
     ram.readWriteSync(input.addr, input.value, input.fire, !input.isRead)
 }
 
+case class MarchElement(addrWidth: Int, input: Stream[Element], opRam: Mem[Bits]) extends Area {
+  val addrCount = U(1 << addrWidth - 1)
+  val addrPreStream = input.map(p => {
+    val to = new AddrElement(input.maxOps, addrWidth)
+    to.addr := 0
+    to.element := p
+    to
+  })
+
+  val addrStream = StreamTransactionExtender(addrPreStream, addrCount) {
+    (id, p, _) =>
+      val to = cloneOf(p)
+      to.addr := id
+      to
+  }
+
+  val addrPostStream = addrStream.map(p => {
+    val to = cloneOf(p)
+    when(!p.element.isUpDir) {
+      to.addr := addrCount - p.addr
+    }
+    to
+  })
+
+  // val opRam = Mem(Bits(2 bits), input.maxOps)
+
+  val opPreStream = addrPostStream.map(p => {
+    val to = OpElement(p.maxOps, p.addrWidth)
+    to.addr := p.addr
+    to.opAddr := p.element.opBase
+    to
+  })
+  val opStream =
+    StreamTransactionExtender(opPreStream, addrPostStream.element.count) {
+      (id, p, _) =>
+        val to = cloneOf(p)
+        to.opAddr := p.opAddr + id
+        to
+    }
+
+  val data = opRam.readSync(opStream.opAddr, opStream.fire)
+  val output = opStream
+    .stage()
+    .map(p => {
+      val to = new Instruction(p.addrWidth)
+      to.addr := p.addr
+      to.isRead := data(1)
+      to.value := data(0)
+      to
+    })
+}
