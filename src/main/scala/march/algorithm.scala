@@ -116,8 +116,10 @@ case class SavedElement(maxOps: Int) extends Bundle {
   val isUpDir = Bool()
 }
 
-case class March(maxElements: Int, maxOps: Int, addrWidth: Int)
+case class March(elements: Seq[SavedElement], ops: Seq[Bits], addrWidth: Int)
     extends Component {
+  val maxElements = elements.length
+  val maxOps = ops.length
   val elemAddrWidth = log2Up(maxElements)
   val opAddrWidth = log2Up(maxOps)
   val opBase = Reg(UInt(opAddrWidth bits)) init (0)
@@ -125,7 +127,7 @@ case class March(maxElements: Int, maxOps: Int, addrWidth: Int)
   input.payload := input.payload.getZero
 
   val elemAddr = Counter(maxElements, inc = input.fire)
-  val elemRam = Mem(SavedElement(maxOps), maxElements)
+  val elemRam = Mem(SavedElement(maxOps), elements)
   val element = elemRam.readSync(elemAddr, input.valid)
 
   val elementStream = input
@@ -137,13 +139,13 @@ case class March(maxElements: Int, maxOps: Int, addrWidth: Int)
       to.isUpDir := element.isUpDir
       to
     })
-  when(elementStream.fire) { opBase := opBase + element.count }
+  when(elementStream.fire) { opBase := opBase + element.count + 1 }
 
   val start = RegInit(True)
   val valid = RegNext(start).clearWhen(element.count === maxOps)
   input.valid := valid
 
-  val opRam = Mem(Bits(2 bits), maxOps)
+  val opRam = Mem(Bits(2 bits), ops)
   val meLogic = MarchElement(addrWidth, elementStream, opRam)
 
   val accessLogic = Access(meLogic.output)
@@ -153,8 +155,16 @@ case class March(maxElements: Int, maxOps: Int, addrWidth: Int)
 
 object MarchVerilog {
   def main(args: Array[String]) {
+    val ops = Array[Bits](B"01", B"10", B"01")
+    val seqElem = Seq((0, True), (0, False), (3, False))
+    val elements = seqElem.map(p => {
+      val to = new SavedElement(ops.length)
+      to.count := U(p._1)
+      to.isUpDir := p._2
+      to
+    })
     SpinalVerilog(
-      new March(16, 15, 2)
+      new March(elements, ops, 2)
     )
   }
 }
