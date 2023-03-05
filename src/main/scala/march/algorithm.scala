@@ -25,7 +25,7 @@ case class OpElement(maxOps: Int, addrWidth: Int) extends Bundle {
   val opAddr = UInt(log2Up(maxOps) bits)
 }
 
-case class Check[T <: Instruction](input: Stream[Instruction], data: Bool)
+case class Check(input: Stream[Instruction], data: Bool)
     extends Area {
   val writeStream = cloneOf(input)
   val readStream = cloneOf(input)
@@ -105,4 +105,41 @@ case class MarchElement(addrWidth: Int, input: Stream[Element], opRam: Mem[Bits]
       to.value := data(0)
       to
     })
+}
+
+case class SavedElement(maxOps: Int) extends Bundle {
+  val count = UInt(log2Up(maxOps) bits)
+  val isUpDir = Bool()
+}
+
+case class March(maxElements: Int, maxOps: Int, addrWidth: Int) extends Component{
+  val elemAddrWidth = log2Up(maxElements)
+  val opAddrWidth = log2Up(maxOps)
+  val opBase = Reg(UInt(opAddrWidth bits)) init (0)
+  val input = Stream(Element(maxOps))
+  input.payload := input.payload.getZero
+
+  val elemAddr = Counter(maxElements, inc = input.fire)
+  val elemRam = Mem(SavedElement(maxOps), maxElements)
+  val element = elemRam.readSync(elemAddr, input.valid)
+
+  val elementStream = input.stage().map( p => {
+    val to = cloneOf(p)
+    to.count := element.count
+    to.opBase := opBase
+    to.isUpDir := element.isUpDir
+    to
+  })
+  when(elementStream.fire) {opBase := opBase + element.count}
+
+  val start = RegInit(True)
+  val valid = RegNext(start).clearWhen(element.count === maxOps)
+  input.valid := valid
+  
+  val opRam = Mem(Bits(2 bits), maxOps)
+  val meLogic = MarchElement(addrWidth, elementStream, opRam)
+
+  val accessLogic = Access(meLogic.output)
+
+  val checkLogic = Check(meLogic.output, accessLogic.data)
 }
