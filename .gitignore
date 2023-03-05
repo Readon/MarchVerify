@@ -1,6 +1,9 @@
 # Created by https://www.toptal.com/developers/gitignore/api/scala,metals,visualstudiocode,sbt,bloop
 # Edit at https://www.toptal.com/developers/gitignore?templates=scala,metals,visualstudiocode,sbt,bloop
 
+### Mill ###
+out
+
 ### Bloop ###
 .bloop/
 

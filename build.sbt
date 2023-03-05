@@ -11,7 +11,7 @@ val spinalTester = "com.github.spinalhdl" %% "spinalhdl-tester" % spinalVersion 
 
 lazy val all = (project in file("."))
   .settings(
-    name := "WaveformGenerator",
+    name := "MarchVerify",
     libraryDependencies ++= Seq(spinalCore, spinalLib, spinalIdslPlugin, orgScalaTest, spinalTester)
   )
 
