@@ -73,6 +73,7 @@ case class MarchElement(addrWidth: Int, input: Stream[Element], opRam: Mem[Bits]
 
   val addrPostStream = addrStream.map(p => {
     val to = cloneOf(p)
+    to.addr := p.addr
     when(!p.element.isUpDir) {
       to.addr := addrCount - p.addr
     }
