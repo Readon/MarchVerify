@@ -150,3 +150,11 @@ case class March(maxElements: Int, maxOps: Int, addrWidth: Int)
 
   val checkLogic = Check(meLogic.output, accessLogic.data)
 }
+
+object MarchVerilog {
+  def main(args: Array[String]) {
+    SpinalVerilog(
+      new March(16, 15, 2)
+    )
+  }
+}
