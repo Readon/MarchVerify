@@ -116,7 +116,7 @@ case class SavedElement(maxOps: Int) extends Bundle {
   val isUpDir = Bool()
 }
 
-case class March(elements: Seq[SavedElement], ops: Seq[Bits], addrWidth: Int)
+case class March(elements: Seq[(Int, Boolean)], ops: Seq[String], addrWidth: Int)
     extends Component {
   val maxElements = elements.length
   val maxOps = ops.length
@@ -127,7 +127,13 @@ case class March(elements: Seq[SavedElement], ops: Seq[Bits], addrWidth: Int)
   input.payload := input.payload.getZero
 
   val elemAddr = Counter(maxElements, inc = input.fire)
-  val elemRam = Mem(SavedElement(maxOps), elements)
+  val elemInit = elements.map{case (count, dir) => {
+    val elem = SavedElement(maxOps) 
+    elem.count := U(count)
+    elem.isUpDir := Bool(dir)
+    elem 
+  }}
+  val elemRam = Mem(SavedElement(maxOps), elemInit)
   val element = elemRam.readSync(elemAddr, input.valid)
 
   val elementStream = input
@@ -142,10 +148,14 @@ case class March(elements: Seq[SavedElement], ops: Seq[Bits], addrWidth: Int)
   when(elementStream.fire) { opBase := opBase + element.count + 1 }
 
   val start = RegInit(True)
-  val valid = RegNext(start).clearWhen(element.count === maxOps)
+  val valid = RegNext(start).clearWhen(element.count >= maxOps)
   input.valid := valid
 
-  val opRam = Mem(Bits(2 bits), ops)
+  val opInit = ops.map{case (op) => {
+    assert(op.length == 2)
+    B(op)
+  }}
+  val opRam = Mem(Bits(2 bits), opInit)
   val meLogic = MarchElement(addrWidth, elementStream, opRam)
 
   val accessLogic = Access(meLogic.output)
@@ -155,16 +165,10 @@ case class March(elements: Seq[SavedElement], ops: Seq[Bits], addrWidth: Int)
 
 object MarchVerilog {
   def main(args: Array[String]) {
-    val ops = Array[Bits](B"01", B"10", B"01")
-    val seqElem = Seq((0, True), (0, False), (3, False))
-    val elements = seqElem.map(p => {
-      val to = new SavedElement(ops.length)
-      to.count := U(p._1)
-      to.isUpDir := p._2
-      to
-    })
-    SpinalVerilog(
+    SpinalVerilog({
+      val ops = Array[String]("01", "10", "01")
+      val elements = Seq((0, true), (0, false), (3, false))
       new March(elements, ops, 2)
-    )
+    })
   }
 }
