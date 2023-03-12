@@ -148,9 +148,11 @@ case class March(elements: Seq[(Int, Boolean)], ops: Seq[String], addrWidth: Int
     })
   when(elementStream.fire) { opBase := opBase + element.count + 1 }
 
-  val start = RegInit(True)
-  val valid = RegNext(start).clearWhen(element.count >= maxOps)
-  input.valid := valid
+  val start = RegInit(False)
+  start.setWhen(start === False)
+  val endCond = element.count >= maxOps
+  val valid = RegNext(start).clearWhen(endCond)
+  input.valid := valid & !endCond
 
   val opInit = ops.map{case (op) => {
     assert(op.length == 2)
