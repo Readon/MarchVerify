@@ -9,7 +9,7 @@ class MarchTester extends AnyFunSuite {
   test("compile") {
     compiled = SimConfig.withConfig(SpinalConfig()).compile {
       val ops = Array[String]("01", "11", "00")
-      val elements = Seq((0, true), (1, false), (3, false))
+      val elements = Seq((0, true), (1, false), (ops.length, false))
       val dut = new March(elements, ops, 2)
       dut
     }
