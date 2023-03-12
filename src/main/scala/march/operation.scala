@@ -57,7 +57,7 @@ case class Access(input: Stream[Instruction]) extends Area {
 case class MarchElement(
     addrWidth: Int,
     input: Stream[Element],
-    opRam: Mem[Bits]
+    opRam: Vec[Bits]
 ) extends Area {
   val addrCount = U(1 << addrWidth - 1)
   val addrPreStream = input.map(p => {
@@ -99,9 +99,8 @@ case class MarchElement(
         to
     }
 
-  val data = opRam.readSync(opStream.opAddr, opStream.fire)
+  val data = opRam(opStream.opAddr)
   val output = opStream
-    .stage()
     .map(p => {
       val to = new Instruction(p.addrWidth)
       to.addr := p.addr
@@ -133,11 +132,10 @@ case class March(elements: Seq[(Int, Boolean)], ops: Seq[String], addrWidth: Int
     elem.isUpDir := Bool(dir)
     elem 
   }}
-  val elemRam = Mem(SavedElement(maxOps), elemInit)
-  val element = elemRam.readSync(elemAddr, input.valid)
+  val elemRam = Vec(elemInit)
+  val element = elemRam(elemAddr)//.readSync(elemAddr, input.valid)
 
   val elementStream = input
-    .stage()
     .map(p => {
       val to = cloneOf(p)
       to.count := element.count
@@ -155,7 +153,7 @@ case class March(elements: Seq[(Int, Boolean)], ops: Seq[String], addrWidth: Int
     assert(op.length == 2)
     B(op)
   }}
-  val opRam = Mem(Bits(2 bits), opInit)
+  val opRam = Vec(opInit)
   val meLogic = MarchElement(addrWidth, elementStream, opRam)
 
   val accessLogic = Access(meLogic.output)
