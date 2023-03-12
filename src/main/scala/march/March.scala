@@ -59,7 +59,7 @@ case class MarchElement(
     input: Stream[Element],
     opRam: Vec[Bits]
 ) extends Area {
-  val addrCount = U(1 << addrWidth - 1)
+  val addrCount = U((1 << addrWidth) - 1)
   val addrPreStream = input.map(p => {
     val to = new AddrElement(input.maxOps, addrWidth)
     to.addr := 0
