@@ -71,6 +71,7 @@ case class MarchElement(
     (id, p, _) =>
       val to = cloneOf(p)
       to.addr := id
+      to.element := p.element
       to
   }
 
@@ -80,6 +81,7 @@ case class MarchElement(
     when(!p.element.isUpDir) {
       to.addr := addrCount - p.addr
     }
+    to.element := p.element
     to
   })
 
@@ -95,6 +97,7 @@ case class MarchElement(
     StreamTransactionExtender(opPreStream, addrPostStream.element.count) {
       (id, p, _) =>
         val to = cloneOf(p)
+        to.addr := p.addr
         to.opAddr := p.opAddr + id
         to
     }
