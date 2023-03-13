@@ -37,10 +37,11 @@ case class Check(input: Stream[Instruction], data: Bool) extends Area {
   )
   val checkStream = cloneOf(readStream)
   val checking = checkStream.fire
-  writeStream.haltWhen(checking).throwWhen(True)
+  val termStream = writeStream.haltWhen(checking)
+  termStream.ready := True
 
   checkStream <-< readStream
-  checkStream.throwWhen(True)
+  checkStream.ready := True
 
   when(checking & data =/= checkStream.value) {
     hasFault(checkStream.addr) := True
@@ -118,8 +119,9 @@ case class SavedElement(maxOps: Int) extends Bundle {
   val isUpDir = Bool()
 }
 
-case class March(elements: Seq[(Int, Boolean)], ops: Seq[String], addrWidth: Int)
-    extends Component {
+  val io = new Bundle {
+    val faults = out Bits((1 << addrWidth) bits)
+  }
   val maxElements = elements.length
   val maxOps = ops.length
   val elemAddrWidth = log2Up(maxElements)
@@ -164,6 +166,7 @@ case class March(elements: Seq[(Int, Boolean)], ops: Seq[String], addrWidth: Int
   val accessLogic = Access(meLogic.output)
 
   val checkLogic = Check(meLogic.output, accessLogic.data)
+  io.faults := checkLogic.hasFault.asBits
 }
 
 object MarchVerilog {
