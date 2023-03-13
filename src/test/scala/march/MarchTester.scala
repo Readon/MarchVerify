@@ -31,8 +31,27 @@ class MarchTester extends AnyFunSuite {
 
   test("March C-") {
     val compiled = SimConfig.withConfig(SpinalConfig()).withFstWave.compile {
-      val ops = Array[String]("00", "10", "01", "11", "00", "10", "01", "11", "00", "10")
-      val elements = Seq((0, true), (1, true), (1, true), (1, false), (1, false), (0, false), (ops.length, false))
+      val ops = Array[String](
+        "00",
+        "10",
+        "01",
+        "11",
+        "00",
+        "10",
+        "01",
+        "11",
+        "00",
+        "10"
+      )
+      val elements = Seq(
+        (0, true),
+        (1, true),
+        (1, true),
+        (1, false),
+        (1, false),
+        (0, false),
+        (ops.length, false)
+      )
       val dut = new March(elements, ops, 3)
       dut
     }
