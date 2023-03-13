@@ -86,8 +86,6 @@ case class MarchElement(
     to
   })
 
-  // val opRam = Mem(Bits(2 bits), input.maxOps)
-
   val opPreStream = addrPostStream.map(p => {
     val to = OpElement(p.maxOps, p.addrWidth)
     to.addr := p.addr
@@ -119,9 +117,15 @@ case class SavedElement(maxOps: Int) extends Bundle {
   val isUpDir = Bool()
 }
 
+case class March(
+    elements: Seq[(Int, Boolean)],
+    ops: Seq[String],
+    addrWidth: Int
+) extends Component {
   val io = new Bundle {
-    val faults = out Bits((1 << addrWidth) bits)
+    val faults = out Bits ((1 << addrWidth) bits)
   }
+
   val maxElements = elements.length
   val maxOps = ops.length
   val elemAddrWidth = log2Up(maxElements)
@@ -131,14 +135,16 @@ case class SavedElement(maxOps: Int) extends Bundle {
   input.payload := input.payload.getZero
 
   val elemAddr = Counter(maxElements, inc = input.fire)
-  val elemInit = elements.map{case (count, dir) => {
-    val elem = SavedElement(maxOps) 
-    elem.count := U(count)
-    elem.isUpDir := Bool(dir)
-    elem 
-  }}
+  val elemInit = elements.map {
+    case (count, dir) => {
+      val elem = SavedElement(maxOps)
+      elem.count := U(count)
+      elem.isUpDir := Bool(dir)
+      elem
+    }
+  }
   val elemRam = Vec(elemInit)
-  val element = elemRam(elemAddr)//.readSync(elemAddr, input.valid)
+  val element = elemRam(elemAddr)
 
   val elementStream = input
     .map(p => {
@@ -156,10 +162,12 @@ case class SavedElement(maxOps: Int) extends Bundle {
   val valid = RegNext(start).clearWhen(endCond)
   input.valid := valid & !endCond
 
-  val opInit = ops.map{case (op) => {
-    assert(op.length == 2)
-    B(op)
-  }}
+  val opInit = ops.map {
+    case (op) => {
+      assert(op.length == 2)
+      B(op)
+    }
+  }
   val opRam = Vec(opInit)
   val meLogic = MarchElement(addrWidth, elementStream, opRam)
 
