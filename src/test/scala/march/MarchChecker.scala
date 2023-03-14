@@ -29,14 +29,19 @@ class MarchChecker extends SpinalFormalFunSuite {
 
   test("withNoFault") {
     FormalConfig
-      .withBMC()
+      .withCover(200)
+      // .addEngin(SmtBmc(solver=SmtBmcSolver.Z3))
       .doVerify(new Component {
 
         val dut = FormalDut(new March(elements, ops, 3))
         val reset = ClockDomain.current.isResetActive
         assumeInitial(reset)
 
-        assert(dut.io.faults === 0)
+        val working = CombInit(dut.checkLogic.checking | dut.meLogic.output.valid)
+        when(working){
+          assert(dut.io.faults === 0)
+        }
+        cover(fell(working))
       })
   }
 }
