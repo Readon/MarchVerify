@@ -44,4 +44,30 @@ class MarchChecker extends SpinalFormalFunSuite {
         cover(fell(working))
       })
   }
+  
+  test("withSAF") {
+    FormalConfig
+      .withBMC(120)
+      .withCover(120)
+      // .addEngin(SmtBmc(stbv = true, solver=SmtBmcSolver.Yices))
+      // .withDebug
+      .doVerify(new Component {
+        val pos = 4
+        val value = anyconst(Bool)
+        val dut = FormalDut(March(elementsMarchCm, opsMarchCm, 3))
+        dut.accessLogic.rework {
+          import dut.accessLogic._
+          ram.write(U(pos), value.pull, True)
+        }
+
+        val reset = ClockDomain.current.isResetActive
+        assumeInitial(reset)
+
+        val working = CombInit(dut.checkLogic.checking | dut.meLogic.output.valid)
+        when(fell(working)){
+          assert(dut.io.faults === (1<<pos))
+        }
+        cover(fell(working))
+      })
+  }
 }
