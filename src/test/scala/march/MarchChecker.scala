@@ -5,7 +5,7 @@ import spinal.core.formal._
 import spinal.lib.formal._
 
 class MarchChecker extends SpinalFormalFunSuite {
-  val ops = Array[String](
+  val opsMarchCm = Array[String](
     "00",
     "10",
     "01",
@@ -17,14 +17,14 @@ class MarchChecker extends SpinalFormalFunSuite {
     "00",
     "10"
   )
-  val elements = Seq(
+  val elementsMarchCm = Seq(
     (0, true),
     (1, true),
     (1, true),
     (1, false),
     (1, false),
     (0, false),
-    (ops.length, false)
+    (opsMarchCm.length, false)
   )
 
   test("withNoFault") {
@@ -33,7 +33,7 @@ class MarchChecker extends SpinalFormalFunSuite {
       // .addEngin(SmtBmc(solver=SmtBmcSolver.Z3))
       .doVerify(new Component {
 
-        val dut = FormalDut(new March(elements, ops, 3))
+        val dut = FormalDut(new March(elementsMarchCm, opsMarchCm, 3))
         val reset = ClockDomain.current.isResetActive
         assumeInitial(reset)
 
