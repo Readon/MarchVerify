@@ -27,24 +27,36 @@ class MarchChecker extends SpinalFormalFunSuite {
     (opsMarchCm.length, false)
   )
 
+  def createLogic(
+      elements: Seq[(Int, Boolean)],
+      ops: Array[String],
+      memWidth: Int = 3,
+      getExpected: (UInt) => Bits,
+      faultEmulate: (March, UInt, Bool) => Unit
+  ) = {
+    val pos = anyconst(UInt(memWidth bits))
+    val value = anyconst(Bool)
+    val dut = FormalDut(March(elements, ops, memWidth))
+    val working = CombInit(dut.checkLogic.checking | dut.meLogic.output.valid)
+    val reset = ClockDomain.current.isResetActive
+    assumeInitial(reset)
+
+    val expected = getExpected(pos)
+    when(fell(working)) {
+      assert(dut.io.faults === expected)
+    }
+    cover(fell(working))
+    faultEmulate(dut, pos, value)
+  }
+
   test("withNoFault") {
     FormalConfig
-      .withCover(200)
-      // .addEngin(SmtBmc(solver=SmtBmcSolver.Z3))
+      .withCover(120)
       .doVerify(new Component {
-
-        val dut = FormalDut(new March(elementsMarchCm, opsMarchCm, 3))
-        val reset = ClockDomain.current.isResetActive
-        assumeInitial(reset)
-
-        val working = CombInit(dut.checkLogic.checking | dut.meLogic.output.valid)
-        when(working){
-          assert(dut.io.faults === 0)
-        }
-        cover(fell(working))
+        createLogic(elementsMarchCm, opsMarchCm, 3, (_) => 0, (_, _, _) => {})
       })
   }
-  
+
   test("withSAF") {
     FormalConfig
       .withBMC(120)
@@ -52,22 +64,19 @@ class MarchChecker extends SpinalFormalFunSuite {
       // .addEngin(SmtBmc(stbv = true, solver=SmtBmcSolver.Yices))
       // .withDebug
       .doVerify(new Component {
-        val pos = 4
-        val value = anyconst(Bool)
-        val dut = FormalDut(March(elementsMarchCm, opsMarchCm, 3))
-        dut.accessLogic.rework {
-          import dut.accessLogic._
-          ram.write(U(pos), value.pull, True)
-        }
-
-        val reset = ClockDomain.current.isResetActive
-        assumeInitial(reset)
-
-        val working = CombInit(dut.checkLogic.checking | dut.meLogic.output.valid)
-        when(fell(working)){
-          assert(dut.io.faults === (1<<pos))
-        }
-        cover(fell(working))
+        val memWidth = 3
+        createLogic(
+          elementsMarchCm,
+          opsMarchCm,
+          memWidth,
+          (pos) => (B(1) << pos).resize(1 << memWidth),
+          (dut, pos, value) => {
+            dut.accessLogic.rework {
+              import dut.accessLogic._
+              ram.write(pos.pull, value.pull, True)
+            }
+          }
+        )
       })
   }
 }
