@@ -1,10 +1,10 @@
 package uestsg.march
 
-import org.scalatest.funsuite.AnyFunSuite
 import spinal.core._
 import spinal.core.sim._
+import spinal.tester._
 
-class MarchTester extends AnyFunSuite {
+class MarchTester extends SpinalAnyFunSuite {
   test("compile") {
     val compiled = SimConfig.withConfig(SpinalConfig()).withFstWave.compile {
       val ops = Array[String]("01", "11", "00")
