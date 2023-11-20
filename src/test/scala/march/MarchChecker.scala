@@ -6,24 +6,24 @@ import spinal.lib.formal._
 
 class MarchChecker extends SpinalFormalFunSuite {
   val opsMarchCm = Array[String](
-    "00",
-    "10",
-    "01",
-    "11",
-    "00",
-    "10",
-    "01",
-    "11",
-    "00",
-    "10"
+    March.W0,
+    March.R0,
+    March.W1,
+    March.R1,
+    March.W0,
+    March.R0,
+    March.W1,
+    March.R1,
+    March.W0,
+    March.R0
   )
   val elementsMarchCm = Seq(
-    (0, true),
-    (1, true),
-    (1, true),
-    (1, false),
-    (1, false),
-    (0, false),
+    (0, March.UP),
+    (1, March.UP),
+    (1, March.UP),
+    (1, March.DOWN),
+    (1, March.DOWN),
+    (0, March.DOWN),
     (opsMarchCm.length, false)
   )
 

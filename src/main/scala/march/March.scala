@@ -117,6 +117,15 @@ case class SavedElement(maxOps: Int) extends Bundle {
   val isUpDir = Bool()
 }
 
+object March {
+  val W0 = "00"
+  val W1 = "01"
+  val R0 = "10"
+  val R1 = "11"
+  val UP = true
+  val DOWN = false
+}
+
 case class March(
     elements: Seq[(Int, Boolean)],
     ops: Seq[String],
