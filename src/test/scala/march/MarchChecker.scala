@@ -316,22 +316,15 @@ class MarchChecker extends SpinalFormalFunSuite {
           (dut, pos, value) => { // 激励
             dut.accessLogic.rework {
               import dut.accessLogic._
-              // val valueHist = Reg(Bool)
-              // when(pastValidAfterReset && past(input.addr === pos.pull)){
-              //   valueHist := data
-              // }
-              val attackPos = pos.pull
-              val victimPos = pos.pull + 1
-              val attackCond = (input.addr === attackPos)
+              
+              val victimPos = pos.pull
               val victimCond = (input.addr === victimPos)
 
-              val attackHist =
-                RegNextWhen(data, pastValidAfterReset && past(attackCond))
               val victimHist =
-                RegNextWhen(data, pastValidAfterReset && past(victimCond))
+                RegNextWhen(data, pastValidAfterReset && past(victimCond && input.fire))
 
-              when(victimCond && input.isRead && input.value === victimHist) {
-                ram.write(victimPos, !input.value, input.fire)
+              when(pastValidAfterReset && past(victimCond && input.isRead && input.fire)) {
+                ram.write(victimPos, !input.value, value.pull === data && data === past(victimHist))
               }
             }
           }
