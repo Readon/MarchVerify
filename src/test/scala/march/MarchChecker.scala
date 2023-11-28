@@ -196,6 +196,75 @@ test("withCFtr") {
       })
   }
 
+test("withCFwd") {
+    FormalConfig
+      .withBMC(120)
+      .withCover(120)
+      .doVerify(new Component {
+        val memWidth = 3
+        createLogic(
+          elementsMarchCm,
+          opsMarchCm,
+          memWidth,
+          (pos) => (B(1) << pos).resize(1 << memWidth), //响应
+          (dut, pos, value) => { // 激励
+            dut.accessLogic.rework {
+              import dut.accessLogic._
+              // val valueHist = Reg(Bool)
+              // when(pastValidAfterReset && past(input.addr === pos.pull)){
+              //   valueHist := data
+              // }
+              val attackPos = pos.pull
+              val victimPos = pos.pull + 1
+              val attackCond = (input.addr === attackPos)
+              val victimCond = (input.addr === victimPos)
+
+              val attackHist = RegNextWhen(data, pastValidAfterReset && past(attackCond))
+              val victimHist = RegNextWhen(data, pastValidAfterReset && past(victimCond))
+
+              when(victimCond && !input.isRead && input.value === victimHist){
+                ram.write(victimPos, !input.value, input.fire)
+              }
+            }
+          }
+        )
+      })
+  }
+
+test("withCFrd") {
+    FormalConfig
+      .withBMC(120)
+      .withCover(120)
+      .doVerify(new Component {
+        val memWidth = 3
+        createLogic(
+          elementsMarchCm,
+          opsMarchCm,
+          memWidth,
+          (pos) => (B(1) << pos).resize(1 << memWidth), //响应
+          (dut, pos, value) => { // 激励
+            dut.accessLogic.rework {
+              import dut.accessLogic._
+              // val valueHist = Reg(Bool)
+              // when(pastValidAfterReset && past(input.addr === pos.pull)){
+              //   valueHist := data
+              // }
+              val attackPos = pos.pull
+              val victimPos = pos.pull + 1
+              val attackCond = (input.addr === attackPos)
+              val victimCond = (input.addr === victimPos)
+
+              val attackHist = RegNextWhen(data, pastValidAfterReset && past(attackCond))
+              val victimHist = RegNextWhen(data, pastValidAfterReset && past(victimCond))
+
+              when(victimCond && input.isRead && input.value === victimHist){
+                ram.write(victimPos, !input.value, input.fire)
+              }
+            }
+          }
+        )
+      })
+  }
     FormalConfig
       .withBMC(120)
       .withCover(120)
