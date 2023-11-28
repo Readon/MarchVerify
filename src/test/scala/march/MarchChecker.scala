@@ -56,6 +56,30 @@ class MarchChecker extends SpinalFormalFunSuite {
         createLogic(elementsMarchCm, opsMarchCm, 3, (_) => 0, (_, _, _) => {})
       })
   }
+  
+  test("withSAF") {
+    FormalConfig
+      .withBMC(120)
+      .withCover(120)
+      // .addEngin(SmtBmc(stbv = true, solver=SmtBmcSolver.Yices))
+      // .withDebug
+      .doVerify(new Component {
+        val memWidth = 3
+        createLogic(
+          elementsMarchCm,
+          opsMarchCm,
+          memWidth,
+          (pos) => (B(1) << pos).resize(1 << memWidth),
+          (dut, pos, value) => {
+            dut.accessLogic.rework {
+              import dut.accessLogic._
+              ram.write(pos.pull, value.pull, True)
+            }
+          }
+        )
+      })
+  }
+
   test("withCFdsxw!x") {
     FormalConfig
       .withBMC(120)
@@ -66,7 +90,7 @@ class MarchChecker extends SpinalFormalFunSuite {
           elementsMarchCm,
           opsMarchCm,
           memWidth,
-          (pos) => (B(1) << pos).resize(1 << memWidth), //响应
+          (pos) => (B(1) << pos).resize(1 << memWidth), // 响应
           (dut, pos, value) => { // 激励
             dut.accessLogic.rework {
               import dut.accessLogic._
@@ -79,10 +103,12 @@ class MarchChecker extends SpinalFormalFunSuite {
               val attackCond = (input.addr === attackPos)
               val victimCond = (input.addr === victimPos)
 
-              val attackHist = RegNextWhen(data, pastValidAfterReset && past(attackCond))
-              val victimHist = RegNextWhen(data, pastValidAfterReset && past(victimCond))
+              val attackHist =
+                RegNextWhen(data, pastValidAfterReset && past(attackCond))
+              val victimHist =
+                RegNextWhen(data, pastValidAfterReset && past(victimCond))
 
-              when(attackCond && !input.isRead && input.value =/= attackHist){
+              when(attackCond && !input.isRead && input.value =/= attackHist) {
                 ram.write(victimPos, !victimHist, input.fire)
               }
             }
@@ -101,7 +127,7 @@ class MarchChecker extends SpinalFormalFunSuite {
           elementsMarchCm,
           opsMarchCm,
           memWidth,
-          (pos) => (B(1) << pos).resize(1 << memWidth), //响应
+          (pos) => (B(1) << pos).resize(1 << memWidth), // 响应
           (dut, pos, value) => { // 激励
             dut.accessLogic.rework {
               import dut.accessLogic._
@@ -114,10 +140,12 @@ class MarchChecker extends SpinalFormalFunSuite {
               val attackCond = (input.addr === attackPos)
               val victimCond = (input.addr === victimPos)
 
-              val attackHist = RegNextWhen(data, pastValidAfterReset && past(attackCond))
-              val victimHist = RegNextWhen(data, pastValidAfterReset && past(victimCond))
+              val attackHist =
+                RegNextWhen(data, pastValidAfterReset && past(attackCond))
+              val victimHist =
+                RegNextWhen(data, pastValidAfterReset && past(victimCond))
 
-              when(attackCond && !input.isRead && input.value === attackHist){
+              when(attackCond && !input.isRead && input.value === attackHist) {
                 ram.write(victimPos, !victimHist, input.fire)
               }
             }
@@ -126,7 +154,7 @@ class MarchChecker extends SpinalFormalFunSuite {
       })
   }
 
-test("withCFdsrx") {
+  test("withCFdsrx") {
     FormalConfig
       .withBMC(120)
       .withCover(120)
@@ -136,7 +164,7 @@ test("withCFdsrx") {
           elementsMarchCm,
           opsMarchCm,
           memWidth,
-          (pos) => (B(1) << pos).resize(1 << memWidth), //响应
+          (pos) => (B(1) << pos).resize(1 << memWidth), // 响应
           (dut, pos, value) => { // 激励
             dut.accessLogic.rework {
               import dut.accessLogic._
@@ -149,10 +177,12 @@ test("withCFdsrx") {
               val attackCond = (input.addr === attackPos)
               val victimCond = (input.addr === victimPos)
 
-              val attackHist = RegNextWhen(data, pastValidAfterReset && past(attackCond))
-              val victimHist = RegNextWhen(data, pastValidAfterReset && past(victimCond))
+              val attackHist =
+                RegNextWhen(data, pastValidAfterReset && past(attackCond))
+              val victimHist =
+                RegNextWhen(data, pastValidAfterReset && past(victimCond))
 
-              when(attackCond && input.isRead && input.value === attackHist){
+              when(attackCond && input.isRead && input.value === attackHist) {
                 ram.write(victimPos, !victimHist, input.fire)
               }
             }
@@ -161,7 +191,7 @@ test("withCFdsrx") {
       })
   }
 
-test("withCFtr") {
+  test("withCFtr") {
     FormalConfig
       .withBMC(120)
       .withCover(120)
@@ -171,7 +201,7 @@ test("withCFtr") {
           elementsMarchCm,
           opsMarchCm,
           memWidth,
-          (pos) => (B(1) << pos).resize(1 << memWidth), //响应
+          (pos) => (B(1) << pos).resize(1 << memWidth), // 响应
           (dut, pos, value) => { // 激励
             dut.accessLogic.rework {
               import dut.accessLogic._
@@ -184,10 +214,12 @@ test("withCFtr") {
               val attackCond = (input.addr === attackPos)
               val victimCond = (input.addr === victimPos)
 
-              val attackHist = RegNextWhen(data, pastValidAfterReset && past(attackCond))
-              val victimHist = RegNextWhen(data, pastValidAfterReset && past(victimCond))
+              val attackHist =
+                RegNextWhen(data, pastValidAfterReset && past(attackCond))
+              val victimHist =
+                RegNextWhen(data, pastValidAfterReset && past(victimCond))
 
-              when(victimCond && !input.isRead && input.value =/= victimHist){
+              when(victimCond && !input.isRead && input.value =/= victimHist) {
                 ram.write(victimPos, !input.value, input.fire)
               }
             }
@@ -196,7 +228,7 @@ test("withCFtr") {
       })
   }
 
-test("withCFwd") {
+  test("withCFwd") {
     FormalConfig
       .withBMC(120)
       .withCover(120)
@@ -206,7 +238,7 @@ test("withCFwd") {
           elementsMarchCm,
           opsMarchCm,
           memWidth,
-          (pos) => (B(1) << pos).resize(1 << memWidth), //响应
+          (pos) => (B(1) << pos).resize(1 << memWidth), // 响应
           (dut, pos, value) => { // 激励
             dut.accessLogic.rework {
               import dut.accessLogic._
@@ -219,10 +251,12 @@ test("withCFwd") {
               val attackCond = (input.addr === attackPos)
               val victimCond = (input.addr === victimPos)
 
-              val attackHist = RegNextWhen(data, pastValidAfterReset && past(attackCond))
-              val victimHist = RegNextWhen(data, pastValidAfterReset && past(victimCond))
+              val attackHist =
+                RegNextWhen(data, pastValidAfterReset && past(attackCond))
+              val victimHist =
+                RegNextWhen(data, pastValidAfterReset && past(victimCond))
 
-              when(victimCond && !input.isRead && input.value === victimHist){
+              when(victimCond && !input.isRead && input.value === victimHist) {
                 ram.write(victimPos, !input.value, input.fire)
               }
             }
@@ -231,7 +265,7 @@ test("withCFwd") {
       })
   }
 
-test("withCFrd") {
+  test("withCFrd") {
     FormalConfig
       .withBMC(120)
       .withCover(120)
@@ -241,7 +275,7 @@ test("withCFrd") {
           elementsMarchCm,
           opsMarchCm,
           memWidth,
-          (pos) => (B(1) << pos).resize(1 << memWidth), //响应
+          (pos) => (B(1) << pos).resize(1 << memWidth), // 响应
           (dut, pos, value) => { // 激励
             dut.accessLogic.rework {
               import dut.accessLogic._
@@ -254,10 +288,12 @@ test("withCFrd") {
               val attackCond = (input.addr === attackPos)
               val victimCond = (input.addr === victimPos)
 
-              val attackHist = RegNextWhen(data, pastValidAfterReset && past(attackCond))
-              val victimHist = RegNextWhen(data, pastValidAfterReset && past(victimCond))
+              val attackHist =
+                RegNextWhen(data, pastValidAfterReset && past(attackCond))
+              val victimHist =
+                RegNextWhen(data, pastValidAfterReset && past(victimCond))
 
-              when(victimCond && input.isRead && input.value === victimHist){
+              when(victimCond && input.isRead && input.value === victimHist) {
                 ram.write(victimPos, !input.value, input.fire)
               }
             }
@@ -266,7 +302,7 @@ test("withCFrd") {
       })
   }
 
-test("withCFdrd") {
+  test("withCFdrd") {
     FormalConfig
       .withBMC(120)
       .withCover(120)
@@ -276,7 +312,7 @@ test("withCFdrd") {
           elementsMarchCm,
           opsMarchCm,
           memWidth,
-          (pos) => (B(1) << pos).resize(1 << memWidth), //响应
+          (pos) => (B(1) << pos).resize(1 << memWidth), // 响应
           (dut, pos, value) => { // 激励
             dut.accessLogic.rework {
               import dut.accessLogic._
@@ -289,10 +325,12 @@ test("withCFdrd") {
               val attackCond = (input.addr === attackPos)
               val victimCond = (input.addr === victimPos)
 
-              val attackHist = RegNextWhen(data, pastValidAfterReset && past(attackCond))
-              val victimHist = RegNextWhen(data, pastValidAfterReset && past(victimCond))
+              val attackHist =
+                RegNextWhen(data, pastValidAfterReset && past(attackCond))
+              val victimHist =
+                RegNextWhen(data, pastValidAfterReset && past(victimCond))
 
-              when(victimCond && input.isRead && input.value === victimHist){
+              when(victimCond && input.isRead && input.value === victimHist) {
                 ram.write(victimPos, !input.value, input.fire)
               }
             }
