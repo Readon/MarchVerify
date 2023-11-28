@@ -57,3 +57,5 @@ hs_err_pid*
 
 simWorkspace/
 *.v
+*.sv
+*.vhd
