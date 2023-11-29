@@ -53,7 +53,7 @@ class MarchChecker extends SpinalFormalFunSuite {
     FormalConfig
       .withCover(120)
       .doVerify(new Component {
-        createLogic(elementsMarchCm, opsMarchCm, 3, (_) => 0, (_, _, _) => {})
+        val inject = createLogic(elementsMarchCm, opsMarchCm, 3, (_) => 0, (_, _, _) => {})
       })
   }
   
@@ -65,7 +65,7 @@ class MarchChecker extends SpinalFormalFunSuite {
       // .withDebug
       .doVerify(new Component {
         val memWidth = 3
-        createLogic(
+        val inject = createLogic(
           elementsMarchCm,
           opsMarchCm,
           memWidth,
@@ -86,7 +86,7 @@ class MarchChecker extends SpinalFormalFunSuite {
       .withCover(120)
       .doVerify(new Component {
         val memWidth = 3
-        createLogic(
+        val inject = createLogic(
           elementsMarchCm,
           opsMarchCm,
           memWidth,
@@ -123,7 +123,7 @@ class MarchChecker extends SpinalFormalFunSuite {
       .withCover(120)
       .doVerify(new Component {
         val memWidth = 3
-        createLogic(
+        val inject = createLogic(
           elementsMarchCm,
           opsMarchCm,
           memWidth,
@@ -160,7 +160,7 @@ class MarchChecker extends SpinalFormalFunSuite {
       .withCover(120)
       .doVerify(new Component {
         val memWidth = 3
-        createLogic(
+        val inject = createLogic(
           elementsMarchCm,
           opsMarchCm,
           memWidth,
@@ -197,7 +197,7 @@ class MarchChecker extends SpinalFormalFunSuite {
       .withCover(120)
       .doVerify(new Component {
         val memWidth = 3
-        createLogic(
+        val inject = createLogic(
           elementsMarchCm,
           opsMarchCm,
           memWidth,
@@ -234,7 +234,7 @@ class MarchChecker extends SpinalFormalFunSuite {
       .withCover(120)
       .doVerify(new Component {
         val memWidth = 3
-        createLogic(
+        val inject = createLogic(
           elementsMarchCm,
           opsMarchCm,
           memWidth,
@@ -271,7 +271,7 @@ class MarchChecker extends SpinalFormalFunSuite {
       .withCover(120)
       .doVerify(new Component {
         val memWidth = 3
-        createLogic(
+        val inject = createLogic(
           elementsMarchCm,
           opsMarchCm,
           memWidth,
