@@ -323,8 +323,8 @@ class MarchChecker extends SpinalFormalFunSuite {
               val victimHist =
                 RegNextWhen(data, pastValidAfterReset && past(victimCond && input.fire))
 
-              val injectCond = pastValidAfterReset && past(victimCond && input.isRead && input.fire)
-              val injectEnable = injectCond && value.pull === data && data === past(victimHist)
+              val injectCond = victimCond && input.isRead && input.fire
+              val injectEnable = injectCond && value.pull === input.value && value.pull === past(victimHist)
               ram.write(victimPos, !value.pull, injectEnable)
             }
           }
