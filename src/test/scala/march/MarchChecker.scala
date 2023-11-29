@@ -33,7 +33,7 @@ class MarchChecker extends SpinalFormalFunSuite {
       memWidth: Int = 3,
       getExpected: (UInt) => Bits,
       faultEmulate: (March, UInt, Bool) => Unit
-  ) = {
+  ) = new Area {
     val pos = anyconst(UInt(memWidth bits))
     val value = anyconst(Bool)
     val dut = FormalDut(March(elements, ops, memWidth))
@@ -308,7 +308,7 @@ class MarchChecker extends SpinalFormalFunSuite {
       .withCover(120)
       .doVerify(new Component {
         val memWidth = 3
-        createLogic(
+        val inject = createLogic(
           elementsMarchCm,
           opsMarchCm,
           memWidth,
