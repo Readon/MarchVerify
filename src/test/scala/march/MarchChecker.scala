@@ -304,7 +304,7 @@ class MarchChecker extends SpinalFormalFunSuite {
   }
 
   test("withCFdrd") {
-    FormalConfig
+    shouldFail(FormalConfig
       .withBMC(64)
       .withCover(64)
       .doVerify(new Component {
@@ -330,6 +330,6 @@ class MarchChecker extends SpinalFormalFunSuite {
             }
           }
         )
-      })
+      }))
   }
 }
