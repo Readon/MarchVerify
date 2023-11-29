@@ -53,7 +53,8 @@ class MarchChecker extends SpinalFormalFunSuite {
     FormalConfig
       .withCover(120)
       .doVerify(new Component {
-        val inject = createLogic(elementsMarchCm, opsMarchCm, 3, (_) => 0, (_, _, _) => {})
+        val memWidth = 3
+        val inject = createLogic(elementsMarchCm, opsMarchCm, memWidth, (_) => B(0, 1 << memWidth bits), (_, _, _) => {})
       })
   }
   
