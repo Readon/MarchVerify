@@ -35,12 +35,10 @@ case class Check(input: Stream[Instruction], data: Bool) extends Area {
     input.isRead.asUInt,
     2
   )
-  val checkStream = cloneOf(readStream)
-  val checking = checkStream.fire
-  val termStream = writeStream.haltWhen(checking)
-  termStream.ready := True
+  writeStream.ready := True
 
-  checkStream <-< readStream
+  val checkStream = readStream.stage
+  val checking = checkStream.fire
   checkStream.ready := True
 
   when(checking & data =/= checkStream.value) {
