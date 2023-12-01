@@ -281,10 +281,34 @@ class MarchChecker extends SpinalFormalFunSuite {
         )
       }))
   }
+
+  test("withWDF") {
+    shouldFail(FormalConfig
+      .withBMC(48)
+      .withCover(48)
+      .doVerify(new Component {
+        val memWidth = 2
+        val inject = createLogic(
+          elementsMarchCm,
+          opsMarchCm,
+          memWidth,
+          (pos) => (B(1) << pos).resize(1 << memWidth), // 响应
+          (dut, pos, value) => { // 激励
+            dut.accessLogic.rework {
+              import dut.accessLogic._
+
+              val victimPos = pos.pull
+              val victimCond = (input.addr === victimPos)
+
+              val victimHist = ram(victimPos)
+
+              val injectCond = victimCond && !input.isRead && input.fire
+              val injectEnable = injectCond && value.pull === input.value && value.pull === victimHist
+              ram.write(victimPos, !value.pull, injectEnable)
             }
           }
         )
-      })
+      }))
   }
 
   test("withCFdrd") {
