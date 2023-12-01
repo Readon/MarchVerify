@@ -253,12 +253,12 @@ class MarchChecker extends SpinalFormalFunSuite {
       }))
   }
 
-  test("withCFrd") {
-    FormalConfig
-      .withBMC(88)
-      .withCover(88)
+  test("withTF") {
+    shouldFail(FormalConfig
+      .withBMC(48)
+      .withCover(48)
       .doVerify(new Component {
-        val memWidth = 3
+        val memWidth = 2
         val inject = createLogic(
           elementsMarchCm,
           opsMarchCm,
@@ -267,23 +267,20 @@ class MarchChecker extends SpinalFormalFunSuite {
           (dut, pos, value) => { // 激励
             dut.accessLogic.rework {
               import dut.accessLogic._
-              // val valueHist = Reg(Bool)
-              // when(pastValidAfterReset && past(input.addr === pos.pull)){
-              //   valueHist := data
-              // }
-              val attackPos = pos.pull
-              val victimPos = pos.pull + 1
-              val attackCond = (input.addr === attackPos)
+
+              val victimPos = pos.pull
               val victimCond = (input.addr === victimPos)
 
-              val attackHist =
-                RegNextWhen(data, pastValidAfterReset && past(attackCond))
-              val victimHist =
-                RegNextWhen(data, pastValidAfterReset && past(victimCond))
+              val victimHist = ram(victimPos)
 
-              when(victimCond && input.isRead && input.value === victimHist) {
-                ram.write(victimPos, !input.value, input.fire)
-              }
+              val injectCond = victimCond && !input.isRead && input.fire
+              val injectEnable = injectCond && value.pull === !input.value && value.pull === victimHist
+              ram.write(victimPos, value.pull, injectEnable)
+            }
+          }
+        )
+      }))
+  }
             }
           }
         )
