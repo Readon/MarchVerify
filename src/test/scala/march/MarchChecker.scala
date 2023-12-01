@@ -311,7 +311,7 @@ class MarchChecker extends SpinalFormalFunSuite {
       }))
   }
 
-  test("withCFdrd") {
+  test("withDRDF") {
     shouldFail(FormalConfig
       .withBMC(48)
       .withCover(48)
@@ -329,11 +329,10 @@ class MarchChecker extends SpinalFormalFunSuite {
               val victimPos = pos.pull
               val victimCond = (input.addr === victimPos)
 
-              val victimHist =
-                RegNextWhen(data, pastValidAfterReset && past(victimCond && input.fire))
+              val victimHist = ram(victimPos)
 
               val injectCond = victimCond && input.isRead && input.fire
-              val injectEnable = injectCond && value.pull === input.value && value.pull === past(victimHist)
+              val injectEnable = injectCond && value.pull === input.value && value.pull === victimHist
               ram.write(victimPos, !value.pull, injectEnable)
             }
           }
