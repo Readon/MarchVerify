@@ -87,30 +87,36 @@ class MarchChecker extends SpinalFormalFunSuite {
       .withBMC(88)
       .withCover(88)
       .doVerify(new Component {
+        val posOffId = anyconst(U(1 bits))
+        val availablePosOff = Vec(1, -1)
+        val posOff = availablePosOff(posOffId)
+        val yvalue = anyconst(U(1 bits))
+
         val memWidth = 3
         val inject = createLogic(
           elementsMarchCm,
           opsMarchCm,
           memWidth,
-          (pos) => (B(1) << pos).resize(1 << memWidth), // 响应
+          (pos) => (B(1) << pos + posOff.pull).resize(1 << memWidth), // 响应
           (dut, pos, value) => { // 激励
             dut.accessLogic.rework {
               import dut.accessLogic._
-              // val valueHist = Reg(Bool)
-              // when(pastValidAfterReset && past(input.addr === pos.pull)){
-              //   valueHist := data
-              // }
+
               val attackPos = pos.pull
-              val victimPos = pos.pull + 1
-              val attackCond = (input.addr === attackPos)
-              val victimCond = (input.addr === victimPos)
+              val victimPos = pos.pull + posOff.pull
+              val attackState = ram(attackPos)
+              val victimState = ram(victimPos)
 
-              val attackHist = ram(attackPos)
-              val victimHist = ram(victimPos)
+              def writeOpCond(x: Bool) = !input.isRead && input.fire && input.value === x
+              def readOpCond(x: Bool = value.pull) = input.isRead && input.fire && input.value === x
+              val opOnAttack = input.addr === attackPos
+              val opOnVictim = input.addr === victimPos
 
-              val injectCond = attackCond && !input.isRead && input.fire
-              val injectEnable = injectCond && value.pull === !input.value && value.pull === attackHist
-              ram.write(victimPos, !victimHist, injectEnable)
+              val attackCond = attackState === value.pull && opOnAttack && writeOpCond(!value.pull)
+              val victimCond = victimState === yvalue.pull
+
+              val injectEnable = victimCond && attackCond
+              ram.write(victimPos, !victimState, injectEnable)
             }
           }
         )
