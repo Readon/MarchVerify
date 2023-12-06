@@ -389,12 +389,40 @@ class MarchChecker extends SpinalFormalFunSuite {
               import dut.accessLogic._
 
               val victimPos = pos.pull
-              val victimCond = (input.addr === victimPos)
+  test("withCFwd") {
+    shouldFail(FormalConfig
+      .withBMC(88)
+      .withCover(88)
+      .doVerify(new Component {
+        val posOffId = anyconst(U(1 bits))
+        val availablePosOff = Vec(1, -1)
+        val posOff = availablePosOff(posOffId)
+        val yvalue = anyconst(U(1 bits))
 
-              val victimHist = ram(victimPos)
+        val memWidth = 3
+        val inject = createLogic(
+          elementsMarchCm,
+          opsMarchCm,
+          memWidth,
+          (pos) => (B(1) << pos + posOff.pull).resize(1 << memWidth), // 响应
+          (dut, pos, value) => { // 激励
+            dut.accessLogic.rework {
+              import dut.accessLogic._
 
-              val injectCond = victimCond && !input.isRead && input.fire
-              val injectEnable = injectCond && value.pull === input.value && value.pull === victimHist
+              val attackPos = pos.pull
+              val victimPos = pos.pull + posOff.pull
+              val attackState = ram(attackPos)
+              val victimState = ram(victimPos)
+
+              def writeOpCond(x: Bool) = !input.isRead && input.fire && input.value === x
+              def readOpCond(x: Bool = value.pull) = input.isRead && input.fire && input.value === x
+              val opOnAttack = input.addr === attackPos
+              val opOnVictim = input.addr === victimPos
+
+              val attackCond = attackState === yvalue.pull
+              val victimCond = victimState === value.pull && opOnVictim && writeOpCond(value.pull)
+
+              val injectEnable = victimCond && attackCond
               ram.write(victimPos, !value.pull, injectEnable)
             }
           }
