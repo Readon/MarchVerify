@@ -221,11 +221,24 @@ class MarchChecker extends SpinalFormalFunSuite {
               import dut.accessLogic._
 
               val victimPos = pos.pull
-              val victimCond = (input.addr === victimPos)
+              val victimState = ram(victimPos)
 
-              val victimHist = ram(victimPos)
+              def writeOpCond(x: Bool) = !input.isRead && input.fire && input.value === x
+              def readOpCond(x: Bool = value.pull) = input.isRead && input.fire && input.value === x
+              val opOnVictim = input.addr === victimPos
+              val victimCond = victimState === value.pull && opOnVictim && readOpCond(value.pull)
 
-              val injectCond = victimCond && input.isRead && input.fire
+              val injectEnable = victimCond
+              // ram.write(victimPos, !value.pull, injectEnable)
+
+              when(past(injectEnable)) {
+                data := !value.pull
+              }
+            }
+          }
+        )
+      }))
+  }
   test("withCFir") {
     shouldFail(FormalConfig
       .withBMC(88)
