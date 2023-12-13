@@ -87,10 +87,10 @@ class MarchChecker extends SpinalFormalFunSuite {
       .withBMC(88)
       .withCover(88)
       .doVerify(new Component {
-        val posOffId = anyconst(U(1 bits))
-        val availablePosOff = Vec(1, -1)
+        val posOffId = anyconst(UInt(1 bits))
+        val availablePosOff = Vec(U(1), U(-1))
         val posOff = availablePosOff(posOffId)
-        val yvalue = anyconst(U(1 bits))
+        val yvalue = anyconst(Bool)
 
         val memWidth = 3
         val inject = createLogic(
@@ -128,10 +128,10 @@ class MarchChecker extends SpinalFormalFunSuite {
       .withBMC(88)
       .withCover(88)
       .doVerify(new Component {
-        val posOffId = anyconst(U(1 bits))
-        val availablePosOff = Vec(1, -1)
+        val posOffId = anyconst(UInt(1 bits))
+        val availablePosOff = Vec(U(1), U(-1))
         val posOff = availablePosOff(posOffId)
-        val yvalue = anyconst(U(1 bits))
+        val yvalue = anyconst(Bool)
 
         val memWidth = 3
         val inject = createLogic(
@@ -169,10 +169,10 @@ class MarchChecker extends SpinalFormalFunSuite {
       .withBMC(88)
       .withCover(88)
       .doVerify(new Component {
-        val posOffId = anyconst(U(1 bits))
-        val availablePosOff = Vec(1, -1)
+        val posOffId = anyconst(UInt(1 bits))
+        val availablePosOff = Vec(U(1), U(-1))
         val posOff = availablePosOff(posOffId)
-        val yvalue = anyconst(U(1 bits))
+        val yvalue = anyconst(Bool)
 
         val memWidth = 3
         val inject = createLogic(
@@ -244,10 +244,10 @@ class MarchChecker extends SpinalFormalFunSuite {
       .withBMC(88)
       .withCover(88)
       .doVerify(new Component {
-        val posOffId = anyconst(U(1 bits))
-        val availablePosOff = Vec(1, -1)
+        val posOffId = anyconst(UInt(1 bits))
+        val availablePosOff = Vec(U(1), U(-1))
         val posOff = availablePosOff(posOffId)
-        val yvalue = anyconst(U(1 bits))
+        val yvalue = anyconst(Bool)
 
         val memWidth = 3
         val inject = createLogic(
@@ -324,10 +324,10 @@ class MarchChecker extends SpinalFormalFunSuite {
       .withBMC(88)
       .withCover(88)
       .doVerify(new Component {
-        val posOffId = anyconst(U(1 bits))
-        val availablePosOff = Vec(1, -1)
+        val posOffId = anyconst(UInt(1 bits))
+        val availablePosOff = Vec(U(1), U(-1))
         val posOff = availablePosOff(posOffId)
-        val yvalue = anyconst(U(1 bits))
+        val yvalue = anyconst(Bool)
 
         val memWidth = 3
         val inject = createLogic(
@@ -399,10 +399,10 @@ class MarchChecker extends SpinalFormalFunSuite {
       .withBMC(88)
       .withCover(88)
       .doVerify(new Component {
-        val posOffId = anyconst(U(1 bits))
-        val availablePosOff = Vec(1, -1)
+        val posOffId = anyconst(UInt(1 bits))
+        val availablePosOff = Vec(U(1), U(-1))
         val posOff = availablePosOff(posOffId)
-        val yvalue = anyconst(U(1 bits))
+        val yvalue = anyconst(Bool)
 
         val memWidth = 3
         val inject = createLogic(
@@ -470,10 +470,10 @@ class MarchChecker extends SpinalFormalFunSuite {
       .withBMC(88)
       .withCover(88)
       .doVerify(new Component {
-        val posOffId = anyconst(U(1 bits))
-        val availablePosOff = Vec(1, -1)
+        val posOffId = anyconst(UInt(1 bits))
+        val availablePosOff = Vec(U(1), U(-1))
         val posOff = availablePosOff(posOffId)
-        val yvalue = anyconst(U(1 bits))
+        val yvalue = anyconst(Bool)
 
         val memWidth = 3
         val inject = createLogic(
@@ -541,10 +541,10 @@ class MarchChecker extends SpinalFormalFunSuite {
       .withBMC(88)
       .withCover(88)
       .doVerify(new Component {
-        val posOffId = anyconst(U(1 bits))
-        val availablePosOff = Vec(1, -1)
+        val posOffId = anyconst(UInt(1 bits))
+        val availablePosOff = Vec(U(1), U(-1))
         val posOff = availablePosOff(posOffId)
-        val yvalue = anyconst(U(1 bits))
+        val yvalue = anyconst(Bool)
 
         val memWidth = 3
         val inject = createLogic(
