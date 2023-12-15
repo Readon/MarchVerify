@@ -88,7 +88,7 @@ class MarchChecker extends SpinalFormalFunSuite {
       .withCover(48)
       .doVerify(new Component {
         val posOffId = anyconst(UInt(1 bits))
-        val availablePosOff = Vec(U(1), U(-1))
+        val availablePosOff = Vec(S(1), S(-1))
         val posOff = availablePosOff(posOffId)
         val yvalue = anyconst(Bool)
 
@@ -97,13 +97,13 @@ class MarchChecker extends SpinalFormalFunSuite {
           elementsMarchCm,
           opsMarchCm,
           memWidth,
-          (pos) => (B(1) << pos + posOff.pull).resize(1 << memWidth), // 响应
+          (pos) => (B(1) << pos + posOff.pull.asUInt).resize(1 << memWidth), // 响应
           (dut, pos, value) => { // 激励
             dut.accessLogic.rework {
               import dut.accessLogic._
 
               val attackPos = pos.pull
-              val victimPos = pos.pull + posOff.pull
+              val victimPos = pos.pull + posOff.pull.asUInt
               val attackState = ram(attackPos)
               val victimState = ram(victimPos)
 
@@ -128,7 +128,7 @@ class MarchChecker extends SpinalFormalFunSuite {
       .withCover(48)
       .doVerify(new Component {
         val posOffId = anyconst(UInt(1 bits))
-        val availablePosOff = Vec(U(1), U(-1))
+        val availablePosOff = Vec(S(1), S(-1))
         val posOff = availablePosOff(posOffId)
         val yvalue = anyconst(Bool)
 
@@ -137,13 +137,13 @@ class MarchChecker extends SpinalFormalFunSuite {
           elementsMarchCm,
           opsMarchCm,
           memWidth,
-          (pos) => (B(1) << pos + posOff.pull).resize(1 << memWidth), // 响应
+          (pos) => (B(1) << pos + posOff.pull.asUInt).resize(1 << memWidth), // 响应
           (dut, pos, value) => { // 激励
             dut.accessLogic.rework {
               import dut.accessLogic._
 
               val attackPos = pos.pull
-              val victimPos = pos.pull + posOff.pull
+              val victimPos = pos.pull + posOff.pull.asUInt
               val attackState = ram(attackPos)
               val victimState = ram(victimPos)
 
@@ -168,7 +168,7 @@ class MarchChecker extends SpinalFormalFunSuite {
       .withCover(48)
       .doVerify(new Component {
         val posOffId = anyconst(UInt(1 bits))
-        val availablePosOff = Vec(U(1), U(-1))
+        val availablePosOff = Vec(S(1), S(-1))
         val posOff = availablePosOff(posOffId)
         val yvalue = anyconst(Bool)
 
@@ -177,13 +177,13 @@ class MarchChecker extends SpinalFormalFunSuite {
           elementsMarchCm,
           opsMarchCm,
           memWidth,
-          (pos) => (B(1) << pos + posOff.pull).resize(1 << memWidth), // 响应
+          (pos) => (B(1) << pos + posOff.pull.asUInt).resize(1 << memWidth), // 响应
           (dut, pos, value) => { // 激励
             dut.accessLogic.rework {
               import dut.accessLogic._
 
               val attackPos = pos.pull
-              val victimPos = pos.pull + posOff.pull
+              val victimPos = pos.pull + posOff.pull.asUInt
               val attackState = ram(attackPos)
               val victimState = ram(victimPos)
 
@@ -242,7 +242,7 @@ class MarchChecker extends SpinalFormalFunSuite {
       .withCover(48)
       .doVerify(new Component {
         val posOffId = anyconst(UInt(1 bits))
-        val availablePosOff = Vec(U(1), U(-1))
+        val availablePosOff = Vec(S(1), S(-1))
         val posOff = availablePosOff(posOffId)
         val yvalue = anyconst(Bool)
 
@@ -251,13 +251,13 @@ class MarchChecker extends SpinalFormalFunSuite {
           elementsMarchCm,
           opsMarchCm,
           memWidth,
-          (pos) => (B(1) << pos + posOff.pull).resize(1 << memWidth), // 响应
+          (pos) => (B(1) << pos + posOff.pull.asUInt).resize(1 << memWidth), // 响应
           (dut, pos, value) => { // 激励
             dut.accessLogic.rework {
               import dut.accessLogic._
 
               val attackPos = pos.pull
-              val victimPos = pos.pull + posOff.pull
+              val victimPos = pos.pull + posOff.pull.asUInt
               val attackState = ram(attackPos)
               val victimState = ram(victimPos)
 
@@ -321,7 +321,7 @@ class MarchChecker extends SpinalFormalFunSuite {
       .withCover(48)
       .doVerify(new Component {
         val posOffId = anyconst(UInt(1 bits))
-        val availablePosOff = Vec(U(1), U(-1))
+        val availablePosOff = Vec(S(1), S(-1))
         val posOff = availablePosOff(posOffId)
         val yvalue = anyconst(Bool)
 
@@ -330,13 +330,13 @@ class MarchChecker extends SpinalFormalFunSuite {
           elementsMarchCm,
           opsMarchCm,
           memWidth,
-          (pos) => (B(1) << pos + posOff.pull).resize(1 << memWidth), // 响应
+          (pos) => (B(1) << pos + posOff.pull.asUInt).resize(1 << memWidth), // 响应
           (dut, pos, value) => { // 激励
             dut.accessLogic.rework {
               import dut.accessLogic._
 
               val attackPos = pos.pull
-              val victimPos = pos.pull + posOff.pull
+              val victimPos = pos.pull + posOff.pull.asUInt
               val attackState = ram(attackPos)
               val victimState = ram(victimPos)
 
@@ -395,7 +395,7 @@ class MarchChecker extends SpinalFormalFunSuite {
       .withCover(48)
       .doVerify(new Component {
         val posOffId = anyconst(UInt(1 bits))
-        val availablePosOff = Vec(U(1), U(-1))
+        val availablePosOff = Vec(S(1), S(-1))
         val posOff = availablePosOff(posOffId)
         val yvalue = anyconst(Bool)
 
@@ -404,13 +404,13 @@ class MarchChecker extends SpinalFormalFunSuite {
           elementsMarchCm,
           opsMarchCm,
           memWidth,
-          (pos) => (B(1) << pos + posOff.pull).resize(1 << memWidth), // 响应
+          (pos) => (B(1) << pos + posOff.pull.asUInt).resize(1 << memWidth), // 响应
           (dut, pos, value) => { // 激励
             dut.accessLogic.rework {
               import dut.accessLogic._
 
               val attackPos = pos.pull
-              val victimPos = pos.pull + posOff.pull
+              val victimPos = pos.pull + posOff.pull.asUInt
               val attackState = ram(attackPos)
               val victimState = ram(victimPos)
 
@@ -466,7 +466,7 @@ class MarchChecker extends SpinalFormalFunSuite {
       .withCover(48)
       .doVerify(new Component {
         val posOffId = anyconst(UInt(1 bits))
-        val availablePosOff = Vec(U(1), U(-1))
+        val availablePosOff = Vec(S(1), S(-1))
         val posOff = availablePosOff(posOffId)
         val yvalue = anyconst(Bool)
 
@@ -475,13 +475,13 @@ class MarchChecker extends SpinalFormalFunSuite {
           elementsMarchCm,
           opsMarchCm,
           memWidth,
-          (pos) => (B(1) << pos + posOff.pull).resize(1 << memWidth), // 响应
+          (pos) => (B(1) << pos + posOff.pull.asUInt).resize(1 << memWidth), // 响应
           (dut, pos, value) => { // 激励
             dut.accessLogic.rework {
               import dut.accessLogic._
 
               val attackPos = pos.pull
-              val victimPos = pos.pull + posOff.pull
+              val victimPos = pos.pull + posOff.pull.asUInt
               val attackState = ram(attackPos)
               val victimState = ram(victimPos)
 
@@ -536,7 +536,7 @@ class MarchChecker extends SpinalFormalFunSuite {
       .withCover(48)
       .doVerify(new Component {
         val posOffId = anyconst(UInt(1 bits))
-        val availablePosOff = Vec(U(1), U(-1))
+        val availablePosOff = Vec(S(1), S(-1))
         val posOff = availablePosOff(posOffId)
         val yvalue = anyconst(Bool)
 
@@ -545,13 +545,13 @@ class MarchChecker extends SpinalFormalFunSuite {
           elementsMarchCm,
           opsMarchCm,
           memWidth,
-          (pos) => (B(1) << pos + posOff.pull).resize(1 << memWidth), // 响应
+          (pos) => (B(1) << pos + posOff.pull.asUInt).resize(1 << memWidth), // 响应
           (dut, pos, value) => { // 激励
             dut.accessLogic.rework {
               import dut.accessLogic._
 
               val attackPos = pos.pull
-              val victimPos = pos.pull + posOff.pull
+              val victimPos = pos.pull + posOff.pull.asUInt
               val attackState = ram(attackPos)
               val victimState = ram(victimPos)
 
