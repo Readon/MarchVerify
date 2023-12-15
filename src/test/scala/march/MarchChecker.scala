@@ -84,6 +84,7 @@ class MarchChecker extends SpinalFormalFunSuite {
   }
 
   test("withCFdsxw!x") {
+    shouldFail(FormalConfig
       .withBMC(48)
       .withCover(48)
       .doVerify(new Component {
@@ -124,6 +125,7 @@ class MarchChecker extends SpinalFormalFunSuite {
   }
 
   test("withCFdsxwx") {
+    shouldFail(FormalConfig
       .withBMC(48)
       .withCover(48)
       .doVerify(new Component {
@@ -164,6 +166,7 @@ class MarchChecker extends SpinalFormalFunSuite {
   }
 
   test("withCFdsrx") {
+    shouldFail(FormalConfig
       .withBMC(48)
       .withCover(48)
       .doVerify(new Component {
@@ -238,6 +241,7 @@ class MarchChecker extends SpinalFormalFunSuite {
       }))
   }
   test("withCFir") {
+    shouldFail(FormalConfig
       .withBMC(48)
       .withCover(48)
       .doVerify(new Component {
@@ -317,6 +321,7 @@ class MarchChecker extends SpinalFormalFunSuite {
   }
 
   test("withCFrd") {
+    shouldFail(FormalConfig
       .withBMC(48)
       .withCover(48)
       .doVerify(new Component {
@@ -391,6 +396,7 @@ class MarchChecker extends SpinalFormalFunSuite {
       }))
   }
   test("withCFtr") {
+    shouldFail(FormalConfig
       .withBMC(48)
       .withCover(48)
       .doVerify(new Component {
@@ -532,6 +538,7 @@ class MarchChecker extends SpinalFormalFunSuite {
       }))
   }
   test("withCFdrd") {
+    shouldFail(FormalConfig
       .withBMC(48)
       .withCover(48)
       .doVerify(new Component {
