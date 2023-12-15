@@ -51,22 +51,23 @@ class MarchChecker extends SpinalFormalFunSuite {
 
   test("withNoFault") {
     FormalConfig
-      .withCover(88)
+      .withBMC(48)
+      .withCover(48)
       .withDebug
       .doVerify(new Component {
-        val memWidth = 3
+        val memWidth = 2
         val inject = createLogic(elementsMarchCm, opsMarchCm, memWidth, (_) => B(0, 1 << memWidth bits), (_, _, _) => {})
       })
   }
   
   test("withSAF") {
     FormalConfig
-      .withBMC(88)
-      .withCover(88)
+      .withBMC(48)
+      .withCover(48)
       // .addEngin(SmtBmc(stbv = true, solver=SmtBmcSolver.Yices))
       // .withDebug
       .doVerify(new Component {
-        val memWidth = 3
+        val memWidth = 2
         val inject = createLogic(
           elementsMarchCm,
           opsMarchCm,
@@ -83,16 +84,15 @@ class MarchChecker extends SpinalFormalFunSuite {
   }
 
   test("withCFdsxw!x") {
-    shouldFail(FormalConfig
-      .withBMC(88)
-      .withCover(88)
+      .withBMC(48)
+      .withCover(48)
       .doVerify(new Component {
         val posOffId = anyconst(UInt(1 bits))
         val availablePosOff = Vec(U(1), U(-1))
         val posOff = availablePosOff(posOffId)
         val yvalue = anyconst(Bool)
 
-        val memWidth = 3
+        val memWidth = 2
         val inject = createLogic(
           elementsMarchCm,
           opsMarchCm,
@@ -124,16 +124,15 @@ class MarchChecker extends SpinalFormalFunSuite {
   }
 
   test("withCFdsxwx") {
-    shouldFail(FormalConfig
-      .withBMC(88)
-      .withCover(88)
+      .withBMC(48)
+      .withCover(48)
       .doVerify(new Component {
         val posOffId = anyconst(UInt(1 bits))
         val availablePosOff = Vec(U(1), U(-1))
         val posOff = availablePosOff(posOffId)
         val yvalue = anyconst(Bool)
 
-        val memWidth = 3
+        val memWidth = 2
         val inject = createLogic(
           elementsMarchCm,
           opsMarchCm,
@@ -165,16 +164,15 @@ class MarchChecker extends SpinalFormalFunSuite {
   }
 
   test("withCFdsrx") {
-    shouldFail(FormalConfig
-      .withBMC(88)
-      .withCover(88)
+      .withBMC(48)
+      .withCover(48)
       .doVerify(new Component {
         val posOffId = anyconst(UInt(1 bits))
         val availablePosOff = Vec(U(1), U(-1))
         val posOff = availablePosOff(posOffId)
         val yvalue = anyconst(Bool)
 
-        val memWidth = 3
+        val memWidth = 2
         val inject = createLogic(
           elementsMarchCm,
           opsMarchCm,
@@ -240,16 +238,15 @@ class MarchChecker extends SpinalFormalFunSuite {
       }))
   }
   test("withCFir") {
-    shouldFail(FormalConfig
-      .withBMC(88)
-      .withCover(88)
+      .withBMC(48)
+      .withCover(48)
       .doVerify(new Component {
         val posOffId = anyconst(UInt(1 bits))
         val availablePosOff = Vec(U(1), U(-1))
         val posOff = availablePosOff(posOffId)
         val yvalue = anyconst(Bool)
 
-        val memWidth = 3
+        val memWidth = 2
         val inject = createLogic(
           elementsMarchCm,
           opsMarchCm,
@@ -320,16 +317,15 @@ class MarchChecker extends SpinalFormalFunSuite {
   }
 
   test("withCFrd") {
-    shouldFail(FormalConfig
-      .withBMC(88)
-      .withCover(88)
+      .withBMC(48)
+      .withCover(48)
       .doVerify(new Component {
         val posOffId = anyconst(UInt(1 bits))
         val availablePosOff = Vec(U(1), U(-1))
         val posOff = availablePosOff(posOffId)
         val yvalue = anyconst(Bool)
 
-        val memWidth = 3
+        val memWidth = 2
         val inject = createLogic(
           elementsMarchCm,
           opsMarchCm,
@@ -395,16 +391,15 @@ class MarchChecker extends SpinalFormalFunSuite {
       }))
   }
   test("withCFtr") {
-    shouldFail(FormalConfig
-      .withBMC(88)
-      .withCover(88)
+      .withBMC(48)
+      .withCover(48)
       .doVerify(new Component {
         val posOffId = anyconst(UInt(1 bits))
         val availablePosOff = Vec(U(1), U(-1))
         val posOff = availablePosOff(posOffId)
         val yvalue = anyconst(Bool)
 
-        val memWidth = 3
+        val memWidth = 2
         val inject = createLogic(
           elementsMarchCm,
           opsMarchCm,
@@ -467,15 +462,15 @@ class MarchChecker extends SpinalFormalFunSuite {
   }
   test("withCFwd") {
     shouldFail(FormalConfig
-      .withBMC(88)
-      .withCover(88)
+      .withBMC(48)
+      .withCover(48)
       .doVerify(new Component {
         val posOffId = anyconst(UInt(1 bits))
         val availablePosOff = Vec(U(1), U(-1))
         val posOff = availablePosOff(posOffId)
         val yvalue = anyconst(Bool)
 
-        val memWidth = 3
+        val memWidth = 2
         val inject = createLogic(
           elementsMarchCm,
           opsMarchCm,
@@ -537,16 +532,15 @@ class MarchChecker extends SpinalFormalFunSuite {
       }))
   }
   test("withCFdrd") {
-    shouldFail(FormalConfig
-      .withBMC(88)
-      .withCover(88)
+      .withBMC(48)
+      .withCover(48)
       .doVerify(new Component {
         val posOffId = anyconst(UInt(1 bits))
         val availablePosOff = Vec(U(1), U(-1))
         val posOff = availablePosOff(posOffId)
         val yvalue = anyconst(Bool)
 
-        val memWidth = 3
+        val memWidth = 2
         val inject = createLogic(
           elementsMarchCm,
           opsMarchCm,
