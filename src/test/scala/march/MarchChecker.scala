@@ -42,9 +42,9 @@ class MarchChecker extends SpinalFormalFunSuite {
     assumeInitial(reset)
 
     val expected = getExpected(pos)
-    when(dut.io.faults =/= 0 || fell(working)) {
-      assert(dut.io.faults === expected)
-    }
+    assert(fell(working) && dut.io.faults === expected)
+    assert(dut.io.faults =/= 0 && dut.io.faults === expected)
+    
     cover(fell(working))
     faultEmulate(dut, pos, value)
   }
