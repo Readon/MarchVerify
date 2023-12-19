@@ -87,6 +87,7 @@ class MarchChecker extends SpinalFormalFunSuite {
   }
 
   test("withCFdsxw!x") {
+    FormalConfig
       .withBMC(48)
       .withCover(48)
       .withDebug
@@ -124,10 +125,11 @@ class MarchChecker extends SpinalFormalFunSuite {
             }
           }
         )
-      }))
+      })
   }
 
   test("withCFdsxwx") {
+    FormalConfig
       .withBMC(48)
       .withCover(48)
       .withDebug
@@ -165,10 +167,11 @@ class MarchChecker extends SpinalFormalFunSuite {
             }
           }
         )
-      }))
+      })
   }
 
   test("withCFdsrx") {
+    FormalConfig
       .withBMC(48)
       .withCover(48)
       .withDebug
@@ -206,11 +209,11 @@ class MarchChecker extends SpinalFormalFunSuite {
             }
           }
         )
-      }))
+      })
   }
 
   test("withIRF") {
-    shouldFail(FormalConfig
+    FormalConfig
       .withBMC(48)
       .withCover(48)
       .withDebug
@@ -242,9 +245,10 @@ class MarchChecker extends SpinalFormalFunSuite {
             }
           }
         )
-      }))
+      })
   }
   test("withCFir") {
+    FormalConfig
       .withBMC(48)
       .withCover(48)
       .withDebug
@@ -286,11 +290,11 @@ class MarchChecker extends SpinalFormalFunSuite {
             }
           }
         )
-      }))
+      })
   }
 
   test("withRDF") {
-    shouldFail(FormalConfig
+    FormalConfig
       .withBMC(48)
       .withCover(48)
       .withDebug
@@ -322,10 +326,11 @@ class MarchChecker extends SpinalFormalFunSuite {
             }
           }
         )
-      }))
+      })
   }
 
   test("withCFrd") {
+    FormalConfig
       .withBMC(48)
       .withCover(48)
       .withDebug
@@ -367,11 +372,11 @@ class MarchChecker extends SpinalFormalFunSuite {
             }
           }
         )
-      }))
+      })
   }
 
   test("withTF") {
-    shouldFail(FormalConfig
+    FormalConfig
       .withBMC(48)
       .withCover(48)
       .withDebug
@@ -399,9 +404,10 @@ class MarchChecker extends SpinalFormalFunSuite {
             }
           }
         )
-      }))
+      })
   }
   test("withCFtr") {
+    FormalConfig
       .withBMC(48)
       .withCover(48)
       .withDebug
@@ -439,11 +445,11 @@ class MarchChecker extends SpinalFormalFunSuite {
             }
           }
         )
-      }))
+      })
   }
 
   test("withWDF") {
-    shouldFail(FormalConfig
+    FormalConfig
       .withBMC(48)
       .withCover(48)
       .withDebug
@@ -471,10 +477,10 @@ class MarchChecker extends SpinalFormalFunSuite {
             }
           }
         )
-      }))
+      })
   }
   test("withCFwd") {
-    shouldFail(FormalConfig
+    FormalConfig
       .withBMC(48)
       .withCover(48)
       .withDebug
@@ -512,11 +518,11 @@ class MarchChecker extends SpinalFormalFunSuite {
             }
           }
         )
-      }))
+      })
   }
 
   test("withDRDF") {
-    shouldFail(FormalConfig
+    FormalConfig
       .withBMC(48)
       .withCover(48)
       .withDebug
@@ -544,9 +550,10 @@ class MarchChecker extends SpinalFormalFunSuite {
             }
           }
         )
-      }))
+      })
   }
   test("withCFdrd") {
+    FormalConfig
       .withBMC(48)
       .withCover(48)
       .withDebug
@@ -584,6 +591,6 @@ class MarchChecker extends SpinalFormalFunSuite {
             }
           }
         )
-      }))
+      })
   }
 }
