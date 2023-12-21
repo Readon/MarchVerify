@@ -120,7 +120,7 @@ class MarchChecker extends SpinalFormalFunSuite {
               val attackCond = attackState === value.pull && opOnAttack && writeOpCond(!value.pull)
               val victimCond = victimState === yvalue.pull
 
-              val injectEnable = victimCond && attackCond
+              when(victimCond && attackCond) { injectEnable := True }
               ram.write(victimPos, !victimState, injectEnable)
             }
           }
@@ -162,7 +162,7 @@ class MarchChecker extends SpinalFormalFunSuite {
               val attackCond = attackState === value.pull && opOnAttack && writeOpCond(value.pull)
               val victimCond = victimState === yvalue.pull
 
-              val injectEnable = victimCond && attackCond
+              when(victimCond && attackCond) { injectEnable := True }
               ram.write(victimPos, !victimState, injectEnable)
             }
           }
@@ -204,7 +204,7 @@ class MarchChecker extends SpinalFormalFunSuite {
               val attackCond = attackState === value.pull && opOnAttack && readOpCond(value.pull)
               val victimCond = victimState === yvalue.pull
 
-              val injectEnable = victimCond && attackCond
+              when(victimCond && attackCond) { injectEnable := True }
               ram.write(victimPos, !victimState, injectEnable)
             }
           }
@@ -236,7 +236,7 @@ class MarchChecker extends SpinalFormalFunSuite {
               val opOnVictim = input.addr === victimPos
               val victimCond = victimState === value.pull && opOnVictim && readOpCond(value.pull)
 
-              val injectEnable = victimCond
+              when(victimCond) { injectEnable := True }
               // ram.write(victimPos, !value.pull, injectEnable)
 
               when(past(injectEnable)) {
@@ -281,7 +281,7 @@ class MarchChecker extends SpinalFormalFunSuite {
               val attackCond = attackState === yvalue.pull
               val victimCond = victimState === value.pull && opOnVictim && readOpCond(value.pull)
 
-              val injectEnable = victimCond && attackCond
+              when(victimCond && attackCond) { injectEnable := True }
               // ram.write(victimPos, !value.pull, injectEnable)
 
               when(past(injectEnable)) {
@@ -317,7 +317,7 @@ class MarchChecker extends SpinalFormalFunSuite {
               val opOnVictim = input.addr === victimPos
               val victimCond = victimState === value.pull && opOnVictim && readOpCond(value.pull)
 
-              val injectEnable = victimCond
+              when(victimCond) { injectEnable := True }
               ram.write(victimPos, !value.pull, injectEnable)
 
               when(past(injectEnable)) {
@@ -363,7 +363,7 @@ class MarchChecker extends SpinalFormalFunSuite {
               val attackCond = attackState === yvalue.pull
               val victimCond = victimState === value.pull && opOnVictim && readOpCond(value.pull)
 
-              val injectEnable = victimCond && attackCond
+              when(victimCond && attackCond) { injectEnable := True }
               ram.write(victimPos, !value.pull, injectEnable)
 
               when(past(injectEnable)) {
@@ -399,7 +399,7 @@ class MarchChecker extends SpinalFormalFunSuite {
               val opOnVictim = input.addr === victimPos
               val victimCond = victimState === value.pull && opOnVictim && writeOpCond(!value.pull)
 
-              val injectEnable = victimCond
+              when(victimCond) { injectEnable := True }
               ram.write(victimPos, value.pull, injectEnable)
             }
           }
@@ -440,7 +440,7 @@ class MarchChecker extends SpinalFormalFunSuite {
               val attackCond = attackState === yvalue.pull
               val victimCond = victimState === value.pull && opOnVictim && writeOpCond(!value.pull)
 
-              val injectEnable = victimCond && attackCond
+              when(victimCond && attackCond) { injectEnable := True }
               ram.write(victimPos, value.pull, injectEnable)
             }
           }
@@ -472,7 +472,7 @@ class MarchChecker extends SpinalFormalFunSuite {
               val opOnVictim = input.addr === victimPos
               val victimCond = victimState === value.pull && opOnVictim && writeOpCond(value.pull)
 
-              val injectEnable = victimCond
+              when(victimCond) { injectEnable := True }
               ram.write(victimPos, !value.pull, injectEnable)
             }
           }
@@ -513,7 +513,7 @@ class MarchChecker extends SpinalFormalFunSuite {
               val attackCond = attackState === yvalue.pull
               val victimCond = victimState === value.pull && opOnVictim && writeOpCond(value.pull)
 
-              val injectEnable = victimCond && attackCond
+              when(victimCond && attackCond) { injectEnable := True }
               ram.write(victimPos, !value.pull, injectEnable)
             }
           }
@@ -545,7 +545,7 @@ class MarchChecker extends SpinalFormalFunSuite {
               val opOnVictim = input.addr === victimPos
               val victimCond = victimState === value.pull && opOnVictim && readOpCond(value.pull)
 
-              val injectEnable = victimCond
+              when(victimCond) { injectEnable := True }
               ram.write(victimPos, !value.pull, injectEnable)
             }
           }
@@ -586,7 +586,7 @@ class MarchChecker extends SpinalFormalFunSuite {
               val attackCond = attackState === yvalue.pull
               val victimCond = victimState === value.pull && opOnVictim && readOpCond(value.pull)
 
-              val injectEnable = victimCond && attackCond
+              when(victimCond && attackCond) { injectEnable := True }
               ram.write(victimPos, !value.pull, injectEnable)
             }
           }
