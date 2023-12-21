@@ -102,8 +102,8 @@ class MarchChecker extends SpinalFormalFunSuite {
           elementsMarchCm,
           opsMarchCm,
           memWidth,
-          (pos) => (B(1) << pos + posOff.pull.asUInt).resize(1 << memWidth), // 响应
-          (dut, pos, value) => { // 激励
+          (pos) => (B(1) << pos + posOff.pull.asUInt).resize(1 << memWidth),
+          (dut, pos, value) => { 
             dut.accessLogic.rework {
               import dut.accessLogic._
 
@@ -144,8 +144,8 @@ class MarchChecker extends SpinalFormalFunSuite {
           elementsMarchCm,
           opsMarchCm,
           memWidth,
-          (pos) => (B(1) << pos + posOff.pull.asUInt).resize(1 << memWidth), // 响应
-          (dut, pos, value) => { // 激励
+          (pos) => (B(1) << pos + posOff.pull.asUInt).resize(1 << memWidth),
+          (dut, pos, value) => {
             dut.accessLogic.rework {
               import dut.accessLogic._
 
@@ -186,8 +186,8 @@ class MarchChecker extends SpinalFormalFunSuite {
           elementsMarchCm,
           opsMarchCm,
           memWidth,
-          (pos) => (B(1) << pos + posOff.pull.asUInt).resize(1 << memWidth), // 响应
-          (dut, pos, value) => { // 激励
+          (pos) => (B(1) << pos + posOff.pull.asUInt).resize(1 << memWidth),
+          (dut, pos, value) => { 
             dut.accessLogic.rework {
               import dut.accessLogic._
 
@@ -223,8 +223,8 @@ class MarchChecker extends SpinalFormalFunSuite {
           elementsMarchCm,
           opsMarchCm,
           memWidth,
-          (pos) => (B(1) << pos).resize(1 << memWidth), // 响应
-          (dut, pos, value) => { // 激励
+          (pos) => (B(1) << pos).resize(1 << memWidth),
+          (dut, pos, value) => { 
             dut.accessLogic.rework {
               import dut.accessLogic._
 
@@ -263,8 +263,8 @@ class MarchChecker extends SpinalFormalFunSuite {
           elementsMarchCm,
           opsMarchCm,
           memWidth,
-          (pos) => (B(1) << pos + posOff.pull.asUInt).resize(1 << memWidth), // 响应
-          (dut, pos, value) => { // 激励
+          (pos) => (B(1) << pos + posOff.pull.asUInt).resize(1 << memWidth),
+          (dut, pos, value) => { 
             dut.accessLogic.rework {
               import dut.accessLogic._
 
@@ -304,8 +304,8 @@ class MarchChecker extends SpinalFormalFunSuite {
           elementsMarchCm,
           opsMarchCm,
           memWidth,
-          (pos) => (B(1) << pos).resize(1 << memWidth), // 响应
-          (dut, pos, value) => { // 激励
+          (pos) => (B(1) << pos).resize(1 << memWidth),
+          (dut, pos, value) => { 
             dut.accessLogic.rework {
               import dut.accessLogic._
 
@@ -345,8 +345,8 @@ class MarchChecker extends SpinalFormalFunSuite {
           elementsMarchCm,
           opsMarchCm,
           memWidth,
-          (pos) => (B(1) << pos + posOff.pull.asUInt).resize(1 << memWidth), // 响应
-          (dut, pos, value) => { // 激励
+          (pos) => (B(1) << pos + posOff.pull.asUInt).resize(1 << memWidth),
+          (dut, pos, value) => { 
             dut.accessLogic.rework {
               import dut.accessLogic._
 
@@ -386,8 +386,8 @@ class MarchChecker extends SpinalFormalFunSuite {
           elementsMarchCm,
           opsMarchCm,
           memWidth,
-          (pos) => (B(1) << pos).resize(1 << memWidth), // 响应
-          (dut, pos, value) => { // 激励
+          (pos) => (B(1) << pos).resize(1 << memWidth),
+          (dut, pos, value) => { 
             dut.accessLogic.rework {
               import dut.accessLogic._
 
@@ -422,8 +422,8 @@ class MarchChecker extends SpinalFormalFunSuite {
           elementsMarchCm,
           opsMarchCm,
           memWidth,
-          (pos) => (B(1) << pos + posOff.pull.asUInt).resize(1 << memWidth), // 响应
-          (dut, pos, value) => { // 激励
+          (pos) => (B(1) << pos + posOff.pull.asUInt).resize(1 << memWidth),
+          (dut, pos, value) => { 
             dut.accessLogic.rework {
               import dut.accessLogic._
 
@@ -459,8 +459,8 @@ class MarchChecker extends SpinalFormalFunSuite {
           elementsMarchCm,
           opsMarchCm,
           memWidth,
-          (pos) => (B(1) << pos).resize(1 << memWidth), // 响应
-          (dut, pos, value) => { // 激励
+          (pos) => (B(1) << pos).resize(1 << memWidth),
+          (dut, pos, value) => { 
             dut.accessLogic.rework {
               import dut.accessLogic._
 
@@ -495,8 +495,8 @@ class MarchChecker extends SpinalFormalFunSuite {
           elementsMarchCm,
           opsMarchCm,
           memWidth,
-          (pos) => (B(1) << pos + posOff.pull.asUInt).resize(1 << memWidth), // 响应
-          (dut, pos, value) => { // 激励
+          (pos) => (B(1) << pos + posOff.pull.asUInt).resize(1 << memWidth),
+          (dut, pos, value) => { 
             dut.accessLogic.rework {
               import dut.accessLogic._
 
@@ -532,8 +532,8 @@ class MarchChecker extends SpinalFormalFunSuite {
           elementsMarchCm,
           opsMarchCm,
           memWidth,
-          (pos) => (B(1) << pos).resize(1 << memWidth), // 响应
-          (dut, pos, value) => { // 激励
+          (pos) => (B(1) << pos).resize(1 << memWidth),
+          (dut, pos, value) => { 
             dut.accessLogic.rework {
               import dut.accessLogic._
               
@@ -568,8 +568,8 @@ class MarchChecker extends SpinalFormalFunSuite {
           elementsMarchCm,
           opsMarchCm,
           memWidth,
-          (pos) => (B(1) << pos + posOff.pull.asUInt).resize(1 << memWidth), // 响应
-          (dut, pos, value) => { // 激励
+          (pos) => (B(1) << pos + posOff.pull.asUInt).resize(1 << memWidth),
+          (dut, pos, value) => { 
             dut.accessLogic.rework {
               import dut.accessLogic._
 
