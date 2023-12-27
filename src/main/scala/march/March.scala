@@ -47,11 +47,11 @@ case class Check(input: Stream[Instruction], data: Bool) extends Area {
 }
 
 case class Access(input: Stream[Instruction]) extends Area {
-  val injectEnable = False
+  val writeEnable = True
   val addrWidth = input.addr.getBitsWidth
   val ram = Mem(Bool, 1 << addrWidth)
   val data =
-    ram.readWriteSync(input.addr, input.value, input.fire, !input.isRead && !injectEnable)
+    ram.readWriteSync(input.addr, input.value, input.fire, !input.isRead && writeEnable)
 }
 
 case class MarchElement(
